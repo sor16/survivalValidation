@@ -1,0 +1,16 @@
+#Calculates Cox model and returns list of prediciton for a user specified time
+evalCox <- function(train,test=train,formula,time,surv=TRUE){
+    require(survival)
+    surv_object <- with(train,Surv(as.numeric(fu),dead))
+    coxModel <- coxph(as.formula(formula),data=train)
+    #Use model to predict outcome in testset
+    baselineCumHazard <- basehaz(coxModel)
+    LinearComb <- predict(coxModel,newdata=test) 
+    if(surv){
+        predictionFUN <- function(i) exp(-i*exp(LinearComb))
+    }else{
+        predictionFUN <- function(i) 1-exp(-i*exp(LinearComb))
+    }
+    prediction <- lapply(baselineCumHazard$hazard[time==baselineCumHazard$time],FUN=predictionFUN)
+    return(prediction)
+}
