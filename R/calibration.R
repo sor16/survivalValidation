@@ -23,16 +23,16 @@ calibration <- function(train,test=train,FittingFunction,formula,time,xlim=c(0,1
     calibrationData <- lapply(deciles,function(i){
         relevantEntries <- statusAtTime[abs(prediction-i)<=epsilon]
         n <- length(relevantEntries)
-        if(n<100) 
+        if(n<30)
             return(data.frame(deciles=NA,proportion=NA,lower=NA,upper=NA,n=NA))
-        
+
         actualDeath <- sum(relevantEntries)
         estimatedDeath <- round(i*n)
         proportion <- actualDeath/n
         diff <- proportion-i
         p <- prop.test(x=c(actualDeath,estimatedDeath),n=rep(n,2))
         data.frame(deciles=i,proportion=proportion,lower=proportion-abs((diff-p$conf.int[1])),upper=proportion+abs((diff-p$conf.int[2])),n=n)
-    
+
     }) %>% rbind_all()
     return(calibrationData)
 }
