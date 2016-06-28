@@ -29,6 +29,6 @@ The function returns a data frame of the proportion that had an event for a give
 Cross Validation
 }
 \examples{
-add(1,2)
+
 }
 

@@ -24,9 +24,8 @@ calibration <- function(train,test=train,FittingFunction,formula,time,xlim=c(0,1
         relevantEntries <- statusAtTime[abs(prediction-i)<=epsilon]
         n <- length(relevantEntries)
         if(n<30)
-            return(data.frame(deciles=NA,proportion=NA,lower=NA,upper=NA,n=NA))
-
-        actualDeath <- sum(relevantEntries)
+            return(data.frame(deciles=i,proportion=NA,lower=NA,upper=NA,n=n))
+        actualDeath <- sum(relevantEntries,na.rm=T)
         estimatedDeath <- round(i*n)
         proportion <- actualDeath/n
         diff <- proportion-i
