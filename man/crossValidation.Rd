@@ -25,6 +25,6 @@ The function returns a large list of length nrRuns. Each element in the list con
 Cross Validation
 }
 \examples{
-add(1,2)
+crossValidation(data)
 }
 

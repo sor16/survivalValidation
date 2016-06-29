@@ -9,6 +9,7 @@
 #' @param by a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim
 #' @return The function returns a data frame of the proportion that had an event for a given survival probability including confidence intervals
 #' @examples
+#' calibration(train,test)
 #' @export
 #'
 calibration <- function(train,test=train,FittingFunction,formula,time,xlim=c(0,1),by=0.05){

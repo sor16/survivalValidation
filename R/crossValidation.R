@@ -8,6 +8,7 @@
 #' \link[survivalValidation]{calibration},\link[survivalValidation]{ROC}. Could also be a userspecified ValidationFunction
 #' @return The function returns a large list of length nrRuns. Each element in the list contains all k elements from one run of cross validation.
 #' @examples
+#' crossValidation(data)
 #' @export
 
 crossValidation <- function(data,k,ValidationFunction,nrRuns,...){
