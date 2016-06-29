@@ -1,3 +1,5 @@
+#' Predicting Cox Proportional Hazard model
+#' @export
 #Calculates Cox model and returns list of prediciton for a user specified time
 evalCox <- function(train,test=train,formula,time,surv=TRUE){
     require(survival)
@@ -5,7 +7,7 @@ evalCox <- function(train,test=train,formula,time,surv=TRUE){
     coxModel <- coxph(as.formula(formula),data=train)
     #Use model to predict outcome in testset
     baselineCumHazard <- basehaz(coxModel)
-    LinearComb <- predict(coxModel,newdata=test) 
+    LinearComb <- predict(coxModel,newdata=test)
     if(surv){
         predictionFUN <- function(i) exp(-i*exp(LinearComb))
     }else{

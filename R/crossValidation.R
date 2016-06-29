@@ -3,12 +3,12 @@
 #' @param data a data.frame which includes follow up time, event, and covariates.
 #' @param k a numeric value specifying k-fold cross validation.
 #' @param nrRuns a numeric value indicating the number of runs of cross validation is to be performed.
-#' @param ValidationFunciton a function which validates a given model, inbuilt funcitons are IBS,ROC and Calibration. 
+#' @param ValidationFunciton a function which validates a given model, inbuilt funcitons are IBS,ROC and Calibration.
 #' @param ... additional arguments to ValidationFunciton, see \link[survivalValidation]{IBS},
 #' \link[survivalValidation]{calibration},\link[survivalValidation]{ROC}. Could also be a userspecified ValidationFunction
 #' @return The function returns a large list of length nrRuns. Each element in the list contains all k elements from one run of cross validation.
 #' @examples
-#' add(1,2)
+#' @export
 
 crossValidation <- function(data,k,ValidationFunction,nrRuns,...){
     require(dplyr)
