@@ -9,6 +9,7 @@
 #' @export
 #'
 IBS <- function(train,test,FittingFunction,formula){
+    require(survival)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
     }

@@ -2,6 +2,7 @@
 #' @export
 #Calculates Cox model and returns list of prediciton for a user specified time
 evalCox <- function(train,test=train,covariates,time,surv=TRUE){
+    require(survival)
     if(!all(names(train)==names(test))){
         stop("names of train has to be the same as the names of test.")
     }

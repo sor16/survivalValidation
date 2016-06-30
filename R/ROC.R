@@ -13,6 +13,7 @@
 #' @export
 #'
 ROC  <- function(train,test,FittingFunction,time,formula){
+    require(dplyr)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
     }
