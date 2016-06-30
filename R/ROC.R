@@ -3,7 +3,7 @@
 #' @param train a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.
 #' @param test a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion 1/k of the original data set.
 #' @param FittingFunction a function which returns list of survival probabilities of individuals where each element in the list represent a specific time point.
-#' @param formula a formula object corresponding to FittingFunction
+#' @param covariates character vector specifying the names of covariates
 #' @param time a numeric value specifying at what time survival probability is to be calculated.
 #' @param xlim  a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration
 #' @param by a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim
@@ -12,7 +12,7 @@
 #' ROC(train)
 #' @export
 #'
-ROC  <- function(train,test,FittingFunction,time,formula){
+ROC  <- function(train,test,FittingFunction,time,covariates){
     require(dplyr)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
@@ -23,7 +23,7 @@ ROC  <- function(train,test,FittingFunction,time,formula){
     #Check if patient has had an event at a user specified time
     statusAtTime <- with(test,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
-    prediction <- FittingFunction(train=train,test=test,surv=FALSE,time=time,formula=formula) %>% unlist()
+    prediction <- FittingFunction(train=train,test=test,surv=FALSE,time=time,covariates=covariates) %>% unlist()
     threshold <- seq(0,1,length.out=100)
     ROCData <- lapply(threshold,function(i){
         eventPredict = prediction >= i

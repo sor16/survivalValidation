@@ -3,7 +3,7 @@
 #' @param train a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.
 #' @param test a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion 1/k of the original data set.
 #' @param FittingFunction a function which returns list of survival probabilities of individuals where each element in the list represent a specific time point.
-#' @param formula a formula object corresponding to FittingFunction
+#' @param covariates character vector specifying the names of covariates
 #' @param time a numeric value specifying at what time survival probability is to be calculated.
 #' @param xlim  a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration
 #' @param by a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim
@@ -12,7 +12,7 @@
 #' calibration(train,test)
 #' @export
 #'
-calibration <- function(train,test=train,FittingFunction,formula,time,xlim=c(0,1),by=0.05){
+calibration <- function(train,test=train,FittingFunction,covariates,time,xlim=c(0,1),by=0.05){
     require(dplyr)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
@@ -23,7 +23,7 @@ calibration <- function(train,test=train,FittingFunction,formula,time,xlim=c(0,1
     #Check if patient has had an event at a user specified time
     statusAtTime <- with(test,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
-    prediction <- FittingFunction(train=train,test=test,formula=formula,time=time,surv=FALSE) %>% unlist() %>% as.numeric()
+    prediction <- FittingFunction(train=train,test=test,covariates=covariates,time=time,surv=FALSE) %>% unlist() %>% as.numeric()
     #Calculate calibration
     deciles <- seq(xlim[1],xlim[2],by=by)
     epsilon <- by/2
