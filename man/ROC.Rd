@@ -4,7 +4,7 @@
 \alias{ROC}
 \title{ROC curves}
 \usage{
-ROC(train, test, FittingFunction, time, formula)
+ROC(train, test, FittingFunction, time, covariates)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}
@@ -15,7 +15,7 @@ ROC(train, test, FittingFunction, time, formula)
 
 \item{time}{a numeric value specifying at what time survival probability is to be calculated.}
 
-\item{formula}{a formula object corresponding to FittingFunction}
+\item{covariates}{character vector specifying the names of covariates}
 
 \item{xlim}{a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration}
 

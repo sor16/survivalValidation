@@ -4,7 +4,7 @@
 \alias{evalCox}
 \title{Predicting Cox Proportional Hazard model}
 \usage{
-evalCox(train, test = train, formula, time, surv = TRUE)
+evalCox(train, test = train, covariates, time, surv = TRUE)
 }
 \description{
 Predicting Cox Proportional Hazard model

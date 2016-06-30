@@ -4,7 +4,7 @@
 \alias{crossValidation}
 \title{Cross Validation}
 \usage{
-crossValidation(data, k, ValidationFunction, nrRuns, ...)
+crossValidation(data, fu, event, k, ValidationFunction, nrRuns, ...)
 }
 \arguments{
 \item{data}{a data.frame which includes follow up time, event, and covariates.}

@@ -4,25 +4,16 @@
 \alias{IBS}
 \title{Integrated Brier Score}
 \usage{
-IBS(train, test, FittingFunction, formula)
+IBS(train, test, FittingFunction, covariates)
 }
 \arguments{
-\item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}
+\item{train}{a data.frame which includes follow up time (fu), event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}
 
-\item{test}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion 1/k of the original data set.}
+\item{test}{a data.frame which includes follow up time (fu), event, and covariates. In a k-fold cross validation this is a sample proportion 1/k of the original data set.}
 
 \item{FittingFunction}{a function which returns list of survival probabilities of individuals where each element in the list represent a specific time point.}
 
-\item{formula}{a formula object corresponding to FittingFunction}
-
-\item{time}{a numeric value specifying at what time survival probability is to be calculated.}
-
-\item{xlim}{a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration}
-
-\item{by}{a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim}
-}
-\value{
-The function returns a data frame of the proportion that had an event for a given survival probability including confidence intervals
+\item{covariates}{character vector specifying the names of covariates}
 }
 \description{
 Integrated Brier Score

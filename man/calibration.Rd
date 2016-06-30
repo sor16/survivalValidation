@@ -4,8 +4,8 @@
 \alias{calibration}
 \title{Cross Validation}
 \usage{
-calibration(train, test = train, FittingFunction, formula, time, xlim = c(0,
-  1), by = 0.05)
+calibration(train, test = train, FittingFunction, covariates, time,
+  xlim = c(0, 1), by = 0.05)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}
@@ -14,7 +14,7 @@ calibration(train, test = train, FittingFunction, formula, time, xlim = c(0,
 
 \item{FittingFunction}{a function which returns list of survival probabilities of individuals where each element in the list represent a specific time point.}
 
-\item{formula}{a formula object corresponding to FittingFunction}
+\item{covariates}{character vector specifying the names of covariates}
 
 \item{time}{a numeric value specifying at what time survival probability is to be calculated.}
 
