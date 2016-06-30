@@ -17,8 +17,6 @@ ROC(train, test, FittingFunction, time, covariates)
 
 \item{covariates}{character vector specifying the names of covariates}
 
-\item{xlim}{a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration}
-
 \item{by}{a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim}
 }
 \value{

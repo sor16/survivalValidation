@@ -5,7 +5,6 @@
 #' @param FittingFunction a function which returns list of survival probabilities of individuals where each element in the list represent a specific time point.
 #' @param covariates character vector specifying the names of covariates
 #' @param time a numeric value specifying at what time survival probability is to be calculated.
-#' @param xlim  a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration
 #' @param by a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim
 #' @return The function returns a data frame of the proportion that had an event for a given survival probability including confidence intervals
 #' @examples

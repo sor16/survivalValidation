@@ -5,7 +5,7 @@
 \title{Cross Validation}
 \usage{
 calibration(train, test = train, FittingFunction, covariates, time,
-  xlim = c(0, 1), by = 0.05)
+  by = 0.1)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}
@@ -18,9 +18,7 @@ calibration(train, test = train, FittingFunction, covariates, time,
 
 \item{time}{a numeric value specifying at what time survival probability is to be calculated.}
 
-\item{xlim}{a two element vector with values between 0 and 1 specifying lower and upper limit of proportions the function should calculate calibration}
-
-\item{by}{a numeric value specifying the spacing between values in the proportion vector with lower and upper values from xlim}
+\item{by}{a numeric value specifying the spacing between values in the proportion vector ranging from 0 to 1}
 }
 \value{
 The function returns a data frame of the proportion that had an event for a given survival probability including confidence intervals
