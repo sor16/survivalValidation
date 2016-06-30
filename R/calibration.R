@@ -38,6 +38,6 @@ calibration <- function(train,test=train,FittingFunction,covariates,time,by=0.1)
         p <- prop.test(x=c(actualDeath,estimatedDeath),n=rep(n,2))
         data.frame(deciles=i,proportion=proportion,lower=proportion-abs((diff-p$conf.int[1])),upper=proportion+abs((diff-p$conf.int[2])),n=n)
 
-    }) %>% rbind_all()
+    }) %>% bind_rows()
     return(calibrationData)
 }

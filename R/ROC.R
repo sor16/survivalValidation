@@ -29,7 +29,7 @@ ROC  <- function(train,test,FittingFunction,time,covariates){
         TPR=sum(eventPredict & statusAtTime)/sum(statusAtTime)
         FPR=sum(eventPredict & !statusAtTime)/sum(!statusAtTime)
         data.frame(TPR=TPR,FPR=FPR)
-    }) %>% rbind_all() %>% arrange(-row_number())
+    }) %>% bind_rows() %>% arrange(-row_number())
     ROCData$threshold <- threshold
     #trapisunalgun
     AreaOfTrapezoids=with(ROCData,c(0,(FPR[2:(length(TPR))]-FPR[1:(length(TPR)-1)])*0.5*(TPR[1:(length(TPR)-1)]+TPR[2:(length(TPR))])))
