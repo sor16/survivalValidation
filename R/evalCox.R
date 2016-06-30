@@ -1,11 +1,16 @@
 #' Predicting Cox Proportional Hazard model
 #' @export
 #Calculates Cox model and returns list of prediciton for a user specified time
-evalCox <- function(train,test=train,formula,time,surv=TRUE){
-    if(all(!c("fu","event") %in% names(train))){
+evalCox <- function(train,test=train,covariates,time,surv=TRUE){
+    if(!all(names(train)==names(test))){
+        stop("names of train has to be the same as the names of test.")
+    }
+    if(!all(c("fu","event") %in% names(train))){
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
     surv_object <- with(train,Surv(as.numeric(fu),event))
+    #Making formula from covariates
+    formula <- paste("surv_object",paste(covariates,collapse="+"),sep="~")
     coxModel <- coxph(as.formula(formula),data=train)
     #Use model to predict outcome in testset
     baselineCumHazard <- basehaz(coxModel)
@@ -14,6 +19,9 @@ evalCox <- function(train,test=train,formula,time,surv=TRUE){
         predictionFUN <- function(i) exp(-i*exp(LinearComb))
     }else{
         predictionFUN <- function(i) 1-exp(-i*exp(LinearComb))
+    }
+    if(!all(time %in% timeReal)){
+        stop("time argument has to match follow up times from the data.")
     }
     prediction <- lapply(baselineCumHazard$hazard[time==baselineCumHazard$time],FUN=predictionFUN)
     return(prediction)

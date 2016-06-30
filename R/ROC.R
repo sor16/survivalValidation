@@ -13,6 +13,9 @@
 #' @export
 #'
 ROC  <- function(train,test,FittingFunction,time,formula){
+    if(all(names(train)!=names(test))){
+        stop("names of train has to be the same as the names of test.")
+    }
     if(all(!c("fu","event") %in% names(train))){
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
