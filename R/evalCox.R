@@ -3,7 +3,10 @@
 #Calculates Cox model and returns list of prediciton for a user specified time
 evalCox <- function(train,test=train,formula,time,surv=TRUE){
     require(survival)
-    surv_object <- with(train,Surv(as.numeric(fu),dead))
+    if(all(!c("fu","event") %in% names(train))){
+        stop("follow up time in data has to be called fu and the event has to be called event.")
+    }
+    surv_object <- with(train,Surv(as.numeric(fu),event))
     coxModel <- coxph(as.formula(formula),data=train)
     #Use model to predict outcome in testset
     baselineCumHazard <- basehaz(coxModel)
