@@ -17,7 +17,7 @@ IBS <- function(train,test,FittingFunction,formula){
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
     #Kaplan Meier estimate of censoring survival function on the train set
-    censor_object=with(train,Surv(as.numeric(fu),event=!dead))
+    censor_object=with(train,Surv(as.numeric(fu),event=!event))
     censorFit <- survfit(censor_object ~ 1)
     censorSurvPred <- censorFit$surv
     timeVector <- censorFit$time
@@ -25,7 +25,7 @@ IBS <- function(train,test,FittingFunction,formula){
     survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,formula=formula)
 
     BSVector <- sapply(1:length(timeVector),function(i){
-        EventPreTime <- with(test,fu < timeVector[i] & dead)
+        EventPreTime <- with(test,fu < timeVector[i] & event)
         AliveAtTime <- with(test,fu > timeVector[i])
         BS=mean((survPred[[i]]^2*EventPreTime/censorSurvPred[i]) + ((1-survPred[[i]]^2)*AliveAtTime/censorSurvPred[i]))
         BS

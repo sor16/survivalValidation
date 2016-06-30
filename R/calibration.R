@@ -21,7 +21,7 @@ calibration <- function(train,test=train,FittingFunction,formula,time,xlim=c(0,1
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
     #Check if patient has had an event at a user specified time
-    statusAtTime <- with(test,fu < time & dead)
+    statusAtTime <- with(test,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
     prediction <- FittingFunction(train=train,test=test,formula=formula,time=time,surv=FALSE) %>% unlist() %>% as.numeric()
     #Calculate calibration

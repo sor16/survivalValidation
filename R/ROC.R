@@ -21,7 +21,7 @@ ROC  <- function(train,test,FittingFunction,time,formula){
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
     #Check if patient has had an event at a user specified time
-    statusAtTime <- with(test,fu < time & dead)
+    statusAtTime <- with(test,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
     prediction <- FittingFunction(train=train,test=test,surv=FALSE,time=time,formula=formula) %>% unlist()
     threshold <- seq(0,1,length.out=100)
