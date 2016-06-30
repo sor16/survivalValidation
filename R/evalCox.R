@@ -21,7 +21,7 @@ evalCox <- function(train,test=train,covariates,time,surv=TRUE){
     }else{
         predictionFUN <- function(i) 1-exp(-i*exp(LinearComb))
     }
-    if(!all(time %in% timeReal)){
+    if(!all(time %in% baselineCumHazard$time)){
         stop("time argument has to match follow up times from the data.")
     }
     prediction <- lapply(baselineCumHazard$hazard[time==baselineCumHazard$time],FUN=predictionFUN)
