@@ -12,7 +12,6 @@
 #' @export
 
 crossValidation <- function(data,fu,event,k,ValidationFunction,nrRuns,...){
-    require(dplyr)
     data <- data %>% mutate(fu=fu,event=event)
     #force name of survobject to be surv_object
     formula <- gsub("^.*~","surv_object ~",formula)

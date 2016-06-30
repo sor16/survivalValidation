@@ -2,7 +2,6 @@
 #' @export
 #Calculates Cox model and returns list of prediciton for a user specified time
 evalCox <- function(train,test=train,formula,time,surv=TRUE){
-    require(survival)
     if(all(!c("fu","event") %in% names(train))){
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
