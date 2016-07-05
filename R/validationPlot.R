@@ -12,6 +12,8 @@
 #' @export
 #'
 ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,animate=FALSE){
+    require(ggplot2)
+    require(dplyr)
     if(validationMethod=="IBS"){
         if(is.null(evaluationFunctions)) stop("Please insert character vector for which models were used.")
         IBSData <- sapply(svList,unlist) %>% rowMeans() %>% data.frame(IntegratedBrierScore = (.))
