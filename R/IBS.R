@@ -18,9 +18,13 @@ IBS <- function(train,test,FittingFunction,covariates){
     }
     #Kaplan Meier estimate of censoring survival function on the train set
     censor_object=with(train,Surv(as.numeric(fu),event=!event))
+    #locateNA <- train %>% rowSums() %>% !is.na()
+    #censor_object <- censor_object[locateNA]
     censorFit <- survfit(censor_object ~ 1)
-    censorSurvPred <- censorFit$surv
-    timeVector <- censorFit$time
+    censorData = data.frame(surv=censorFit$surv,time=censorFit$time)
+    censorSurvPred <- censorData$surv
+    timeVector <- censorData$time
+
     #Fit a model on train dataset and return prediction on test set
     survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates=covariates)
 
