@@ -6,7 +6,7 @@
 #' @param covariates character vector specifying the names of covariates
 #' @examples
 #' IBS(train)
-
+#' @export
 #'
 IBS <- function(train,test,FittingFunction,covariates){
     require(survival)
