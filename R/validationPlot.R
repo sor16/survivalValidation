@@ -15,7 +15,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,anim
     require(dplyr)
     if(validationMethod=="IBS"){
         if(is.null(evaluationFunctions)) stop("Please insert character vector for which models were used.")
-        IBSData <- sapply(svList,unlist) %>% rowMeans() %>% data.frame(IntegratedBrierScore = (.))
+        IBSData <- sapply(cvList,unlist) %>% rowMeans() %>% data.frame(IntegratedBrierScore = (.))
         ModelType <- factor(evaluationFunctions)
         validationPlot <- ggplot(data = IBSData,aes(ModelType,IntegratedBrierScore)) + geom_boxplot()
     }else if(validationMethod=="ROC"){
