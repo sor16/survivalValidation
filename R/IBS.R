@@ -23,12 +23,12 @@ IBS <- function(train,test,FittingFunction,covariates){
     censorFit <- survfit(censor_object ~ 1)
     censorData <-  data.frame(surv=censorFit$surv,time=censorFit$time)
     censorSurvPred <- censorData$surv
-    #timeVector <- censorData$time
 
     #Fit a model on train dataset and return prediction on test set
     survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=NULL,covariates=covariates)
     #evaluate Brier score at times that survPred allows for
-    censorSurvPred <- censorSurvPred[censorData$time == as.numeric(names(survPred))]
+    timeVector <-  as.numeric(names(survPred))
+    censorSurvPred <- censorSurvPred[censorData$time == timeVector]
     BSVector <- sapply(1:length(timeVector),function(i){
         EventPreTime <- with(test,fu < timeVector[i] & event)
         AliveAtTime <- with(test,fu > timeVector[i])
