@@ -10,7 +10,6 @@
 #' @examples
 #' ROC(train)
 #' @export
-#'
 ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,animate=FALSE){
     require(ggplot2)
     require(dplyr)
