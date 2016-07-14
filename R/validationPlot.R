@@ -40,7 +40,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,anim
         require(plotly)
         validationPlot <- ggplotly(validationPlot)
     }
-    return(validationPLot)
+    return(validationPlot)
 }
 
 
