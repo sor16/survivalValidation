@@ -10,7 +10,7 @@
 #' @examples
 #' ROC(train)
 #' @export
-ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,animate=FALSE){
+ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,legendPosition=NULL,animate=FALSE){
     require(ggplot2)
     require(dplyr)
     if(validationMethod=="IBS"){
@@ -26,12 +26,15 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,anim
             geom_text(data=AUCposition,aes(x,y,label=paste("AUC=",round(AUC,3)))) + xlim(0,1)+ylim(0,1) + theme_bw() +
             ylab("True positive rate") + xlab("False positive rate")
     }else{
-        fullCalibrationData <-  lapply(cvList,rbind_all) %>% rbind_all()
+        fullCalibrationData <-  lapply(cvList,bind_rows) %>% bind_rows()
         summarizedData <- fullCalibrationData %>% group_by(deciles) %>% summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
         linearModel=with(summarizedData,lm(proportion~deciles))
         xlim <- with(summarizedData,range(deciles[!is.na(proportion)])) + c(-0.05,0.05)
         ylim <- with(summarizedData,c(min(lower,na.rm=T),max(upper,na.rm=T)))
-        textDat= data.frame(x=rep(xlim[1]+0.1,2),y=c(3*ylim[2]/4.,3*ylim[2]/4 - 0.1),text=paste(c("A","B"),format(linearModel$coefficients,digits = 2),sep=" = "))
+        if(dim(legendPosition)!=c(2,2)){
+            legendPosition <- data.frame(x=rep(xlim[1]+0.1,2),y=c(3*ylim[2]/4.,3*ylim[2]/4 - 0.1))
+        }
+        textDat= data.frame(legendPosition,text=paste(c("A","B"),format(linearModel$coefficients,digits = 2),sep=" = "))
         validationPlot <- ggplot(data=summarizedData,aes(deciles,proportion)) + geom_point(na.rm=T) + geom_smooth(method = "lm",se=F,na.rm=T) + geom_text(data=textDat,aes(x,y,label=text))+
             geom_errorbar(aes(ymin = lower,ymax = upper,width=0.01,color="red"),na.rm=T) + theme_bw() + xlim(xlim) + ylim(ylim) +
             theme(legend.position="none")
