@@ -23,7 +23,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         summarizedData <- FullROCData %>% group_by(threshold) %>%
             summarise(TPR=mean(TPR,na.rm=T),FPR=mean(FPR,na.rm=T),AUC=mean(AUC,na.rm=T),cumArea=mean(cumArea,na.rm=T)) %>%
             ungroup() %>% distinct(TPR,FPR,.keep_all=TRUE)
-        AUCposition=data.frame(AUC=unique(FullROCData$AUC),x=0.75,y=0.25)
+        AUCposition=data.frame(AUC=unique(summarizedData$AUC),x=0.75,y=0.25)
         validationPlot <- ggplot(data=summarizedData,aes(FPR,TPR,label=cumArea)) + geom_line() + geom_abline(slope=1,intercept=0) +
             geom_text(data=AUCposition,aes(x,y,label=paste("AUC=",round(AUC,3)))) + xlim(0,1)+ylim(0,1) + theme_bw() +
             ylab("True positive rate") + xlab("False positive rate")
