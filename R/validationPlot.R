@@ -33,7 +33,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         linearModel=with(summarizedData,lm(proportion~deciles))
         xlim <- with(summarizedData,range(deciles[!is.na(proportion)])) + c(-0.05,0.05)
         ylim <- with(summarizedData,c(min(lower,na.rm=T),max(upper,na.rm=T)))
-        if(dim(legendPosition)!=c(2,2)){
+        if(is.null(legendPosition)){
             legendPosition <- data.frame(x=rep(xlim[1]+0.1,2),y=c(3*ylim[2]/4.,3*ylim[2]/4 - 0.1))
         }
         textDat= data.frame(legendPosition,text=paste(c("A","B"),format(linearModel$coefficients,digits = 2),sep=" = "))
