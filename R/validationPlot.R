@@ -19,10 +19,10 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         ModelType <- factor(evaluationFunctions)
         validationPlot <- ggplot(data = IBSData,aes(ModelType,IntegratedBrierScore)) + geom_boxplot()
     }else if(validationMethod=="ROC"){
-        FullROCData <-  lapply(FullROCData,bind_rows) %>% bind_rows()
+        FullROCData <-  lapply(cvList,bind_rows) %>% bind_rows()
         summarizedData <- FullROCData %>% group_by(threshold) %>% summarise(TPR=mean(TPR,na.rm=T),FPR=mean(FPR,na.rm=T),AUC=mean(AUC,na.rm=T),cumArea=mean(cumArea,na.rm=T))
         AUCposition=data.frame(AUC=unique(FullROCData$AUC),x=0.75,y=0.25)
-        validationPlot <- ggplot(data=FullROCData,aes(FPR,TPR,label=cumArea)) + geom_line() + geom_abline(slope=1,intercept=0) +
+        validationPlot <- ggplot(data=FullROCData,aes(FPR,TPR,label=cumArea)) + geom_path() + geom_abline(slope=1,intercept=0) +
             geom_text(data=AUCposition,aes(x,y,label=paste("AUC=",round(AUC,3)))) + xlim(0,1)+ylim(0,1) + theme_bw() +
             ylab("True positive rate") + xlab("False positive rate")
     }else{
