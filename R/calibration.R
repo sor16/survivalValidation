@@ -11,7 +11,7 @@
 #' calibration(train,test)
 #' @export
 #'
-calibration <- function(train,test=train,FittingFunction,covariates,time,by=0.1){
+calibration <- function(train,test=train,FittingFunction,covariates,time,by=0.1,...){
     require(dplyr)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
@@ -22,7 +22,7 @@ calibration <- function(train,test=train,FittingFunction,covariates,time,by=0.1)
     #Check if patient has had an event at a user specified time
     statusAtTime <- with(test,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
-    prediction <- FittingFunction(train=train,test=test,covariates=covariates,time=time,surv=FALSE) %>% unlist() %>% as.numeric()
+    prediction <- FittingFunction(train=train,test=test,covariates=covariates,time=time,surv=FALSE,...) %>% unlist() %>% as.numeric()
     #Make sequence of proportions
     deciles <- seq(0,1,by=by)
     epsilon <- by/2
