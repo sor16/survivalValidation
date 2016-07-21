@@ -11,7 +11,7 @@
 #' ROC(train)
 #' @export
 #'
-ROC  <- function(train,test,FittingFunction,time,covariates){
+ROC  <- function(train,test,FittingFunction,time,covariates,...){
     require(dplyr)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
@@ -22,7 +22,7 @@ ROC  <- function(train,test,FittingFunction,time,covariates){
     #Check if patient has had an event at a user specified time
     statusAtTime <- with(test,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
-    prediction <- FittingFunction(train=train,test=test,surv=FALSE,time=time,covariates=covariates) %>% unlist()
+    prediction <- FittingFunction(train=train,test=test,surv=FALSE,time=time,covariates=covariates,...) %>% unlist()
     threshold <- seq(0,1,length.out=100)
     ROCData <- lapply(threshold,function(i){
         eventPredict = prediction >= i

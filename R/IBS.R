@@ -8,7 +8,7 @@
 #' IBS(train)
 #' @export
 #'
-IBS <- function(train,test,FittingFunction,covariates){
+IBS <- function(train,test,FittingFunction,covariates,...){
     require(survival)
     if(all(names(train)!=names(test))){
         stop("names of train has to be the same as the names of test.")
@@ -25,7 +25,7 @@ IBS <- function(train,test,FittingFunction,covariates){
     censorSurvPred <- censorData$surv
 
     #Fit a model on train dataset and return prediction on test set
-    survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=NULL,covariates=covariates)
+    survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=NULL,covariates=covariates,...)
     #evaluate Brier score at times that survPred allows for
     timeVector <-  as.numeric(names(survPred))
     censorSurvPred <- censorSurvPred[censorData$time == timeVector]

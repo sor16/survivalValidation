@@ -1,8 +1,8 @@
 #' Concordance Statistic
 #' @export
 #Calculates concordance statistics as defined by Harrel et al.
-c_statistic <- function(train,test,FittingFunction,covariates,time,surv=TRUE){
-    prediction <- FittingFunction(train=train,test=test,covariates=covariates,time=time,surv=TRUE) %>%
+c_statistic <- function(train,test,FittingFunction,covariates,time,surv=TRUE,...){
+    prediction <- FittingFunction(train=train,test=test,covariates=covariates,time=time,surv=TRUE,...) %>%
         unlist() %>% as.numeric()
     epsilon=10^-6
     fuDiff <- with(test,outer(fu,fu,'-'))
