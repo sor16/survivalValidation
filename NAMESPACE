@@ -3,6 +3,7 @@
 export(IBS)
 export(ROC)
 export(ValidationPlot)
+export(c_statistic)
 export(calibration)
 export(crossValidation)
 export(evalCox)

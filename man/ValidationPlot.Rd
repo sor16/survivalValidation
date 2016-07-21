@@ -5,7 +5,7 @@
 \title{Validation plot}
 \usage{
 ValidationPlot(cvList, validationMethod, evaluationFunctions = NULL,
-  animate = FALSE)
+  legendPosition = NULL, animate = FALSE)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}

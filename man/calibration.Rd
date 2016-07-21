@@ -5,7 +5,7 @@
 \title{Cross Validation}
 \usage{
 calibration(train, test = train, FittingFunction, covariates, time,
-  by = 0.1)
+  by = 0.1, ...)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}

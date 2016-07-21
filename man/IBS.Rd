@@ -4,7 +4,7 @@
 \alias{IBS}
 \title{Integrated Brier Score}
 \usage{
-IBS(train, test, FittingFunction, covariates)
+IBS(train, test, FittingFunction, covariates, ...)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time (fu), event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}

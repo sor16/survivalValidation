@@ -4,7 +4,7 @@
 \alias{ROC}
 \title{ROC curves}
 \usage{
-ROC(train, test, FittingFunction, time, covariates)
+ROC(train, test, FittingFunction, time, covariates, ...)
 }
 \arguments{
 \item{train}{a data.frame which includes follow up time, event, and covariates. In a k-fold cross validation this is a sample proportion (k-1)/k of the original data set.}
