@@ -29,7 +29,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
             ylab("True positive rate") + xlab("False positive rate")
     }else if(validationMethod == "c_statistic"){
         if(is.null(evaluationFunctions)) stop("Please insert character vector for which models were used.")
-        c_statisticData <- c_statisticList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
+        c_statisticData <- cvList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
         ModelType <- factor(evaluationFunctions)
         validationPlot <- ggplot(data = c_statisticData,aes(ModelType,c_statistic)) + geom_boxplot()
     }else{
