@@ -20,7 +20,7 @@ IBS <- function(train,test,FittingFunction,covariates,...){
     censor_object=with(train,Surv(as.numeric(fu),event=!event))
     censorFit <- survfit(censor_object ~ 1)
     timeVector <- censorFit$time
-    censorSurvPred <- censorData$surv
+    censorSurvPred <- censorFit$surv
 
     #Fit a model on train dataset and return prediction on test set
     survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates=covariates,...)
