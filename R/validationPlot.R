@@ -27,6 +27,11 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         validationPlot <- ggplot(data=summarizedData,aes(FPR,TPR,label=cumArea)) + geom_line() + geom_abline(slope=1,intercept=0) +
             geom_text(data=AUCposition,aes(x,y,label=paste("AUC=",round(AUC,3)))) + xlim(0,1)+ylim(0,1) + theme_bw() +
             ylab("True positive rate") + xlab("False positive rate")
+    }else if(validationMethod == "c_statistic"){
+        if(is.null(evaluationFunctions)) stop("Please insert character vector for which models were used.")
+        c_statisticList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
+        ModelType <- factor(evaluationFunctions)
+        validationPlot <- ggplot(data = IBSData,aes(ModelType,c_statistic)) + geom_boxplot()
     }else{
         fullCalibrationData <-  lapply(cvList,bind_rows) %>% bind_rows()
         summarizedData <- fullCalibrationData %>% group_by(deciles) %>% summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
@@ -42,6 +47,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
             geom_errorbar(aes(ymin = lower,ymax = upper,width=0.01,color="red"),na.rm=T) + theme_bw() +
             xlim(xlim) + ylim(ylim) +theme(legend.position="none")
     }
+
     if(animate){
         require(plotly)
         validationPlot <- ggplotly(validationPlot)
