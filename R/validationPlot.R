@@ -17,7 +17,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         if(is.null(evaluationFunctions)) stop("Please insert character vector for which models were used.")
         IBSData <- sapply(cvList,unlist) %>% rowMeans() %>% data.frame(IntegratedBrierScore = (.))
         ModelType <- factor(evaluationFunctions)
-        validationPlot <- ggplot(data = IBSData,aes(ModelType,IntegratedBrierScore)) + geom_boxplot()
+        validationPlot <- ggplot(data = IBSData,aes(ModelType,IntegratedBrierScore)) + theme_bw() + geom_boxplot()
     }else if(validationMethod=="ROC"){
         FullROCData <-  lapply(cvList,bind_rows) %>% bind_rows()
         summarizedData <- FullROCData %>% group_by(threshold) %>%
@@ -31,7 +31,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         if(is.null(evaluationFunctions)) stop("Please insert character vector for which models were used.")
         c_statisticData <- cvList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
         ModelType <- factor(evaluationFunctions)
-        validationPlot <- ggplot(data = c_statisticData,aes(ModelType,c_statistic)) + geom_boxplot()
+        validationPlot <- ggplot(data = c_statisticData,aes(ModelType,c_statistic)) + theme_bw() + geom_boxplot()
     }else{
         fullCalibrationData <-  lapply(cvList,bind_rows) %>% bind_rows()
         summarizedData <- fullCalibrationData %>% group_by(deciles) %>% summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
