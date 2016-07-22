@@ -22,9 +22,9 @@ evalCox <- function(train,test=train,covariates,time,surv=TRUE){
     }else{
         predictionFUN <- function(i) 1-i^exp(LinearPredictor)
     }
-    if(!all(time %in% baseSurvFit$surv)){
-        stop("time argument has to match follow up times from the data.")
-    }
+    # if(!all(time %in% baseSurv)){
+    #     stop("time argument has to match follow up times from the data.")
+    # }
     prediction <- lapply(baseSurv,FUN=predictionFUN)
     names(prediction) <-  time
     return(prediction)
