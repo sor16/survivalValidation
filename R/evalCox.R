@@ -15,7 +15,7 @@ evalCox <- function(train,test=train,covariates,time,surv=TRUE){
     coxModel <- coxph(as.formula(formula),data=train)
     #Use model to predict outcome in testset
     base <- basehaz(coxModel)
-    baseHaz <- approx(base$time,base$hazard,xout=time)
+    baseHaz <- approx(base$time,base$hazard,xout=time)$y
     LinearPredictor <- predict(coxModel,newdata=test)
     if(surv){
         predictionFUN <- function(i) exp(-i*exp(LinearPredictor))
