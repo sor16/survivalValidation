@@ -14,18 +14,18 @@ evalCox <- function(train,test=train,covariates,time,surv=TRUE){
     formula <- paste("surv_object",paste(covariates,collapse="+"),sep="~")
     coxModel <- coxph(as.formula(formula),data=train)
     #Use model to predict outcome in testset
-    baseSurvFit <- survfit(coxModel)
-    baseSurv <- approx(baseSurvFit$time,baseSurvFit$surv,xout=time)$y
+    base <- basehaz(coxModel)
+    baseHaz <- approx(base$time,base$hazard,xout=time)
     LinearPredictor <- predict(coxModel,newdata=test)
     if(surv){
-        predictionFUN <- function(i) i^exp(LinearPredictor)
+        predictionFUN <- function(i) exp(-i*exp(LinearPredictor))
     }else{
-        predictionFUN <- function(i) 1-i^exp(LinearPredictor)
+        predictionFUN <- function(i) 1-exp(-i*exp(LinearPredictor))
     }
     # if(!all(time %in% baseSurv)){
     #     stop("time argument has to match follow up times from the data.")
     # }
-    prediction <- lapply(baseSurv,FUN=predictionFUN)
+    prediction <- lapply(baseHaz,FUN=predictionFUN)
     names(prediction) <-  time
     return(prediction)
 }
