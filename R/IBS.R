@@ -26,9 +26,10 @@ IBS <- function(train,test,FittingFunction,covariates,...){
     survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates=covariates,...)
     #evaluate Brier score at times that survPred allows for
     BSVector <- sapply(1:length(timeVector),function(i){
-        EventPreTime <- with(test,fu < timeVector[i] & event)
+        EventPreTime <- with(test,fu < timeVector[i] & dead)
+        censorWeightIfEvent <- ifelse(EventPreTime,modelData$fu,1)
         AliveAtTime <- with(test,fu > timeVector[i])
-        BS=mean((survPred[[i]]^2*EventPreTime/censorSurvPred[i]) + ((1-survPred[[i]]^2)*AliveAtTime/censorSurvPred[i]))
+        BS=mean((survPred[[i]]^2*EventPreTime/censorWeightIfEvent) + ((1-survPred[[i]]^2)*AliveAtTime/censorSurvPred[i]))
         BS
     })
     #Estimating integral of the Brier score function from 0 to t_max
