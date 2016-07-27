@@ -17,19 +17,19 @@ IBS <- function(train,test,FittingFunction,covariates,...){
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
     #Kaplan Meier estimate of censoring survival function on the train set
-    censor_object=with(train,Surv(as.numeric(fu),event=!event))
+    censor_object=with(train,Surv(as.numeric(fu),event=!dead))
     censorFit <- survfit(censor_object ~ 1)
-    timeVector <- censorFit$time
     censorSurvPred <- censorFit$surv
-
+    timeVector <- censorFit$time
+    censorSurvPredAtFu <- approx(censorFit$time,censorFit$surv,xout=test$fu)$y
     #Fit a model on train dataset and return prediction on test set
-    survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates=covariates,...)
+    survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates = Covariates)
     #evaluate Brier score at times that survPred allows for
     BSVector <- sapply(1:length(timeVector),function(i){
-        EventPreTime <- with(test,fu < timeVector[i] & dead)
-        censorWeightIfEvent <- ifelse(EventPreTime,modelData$fu,1)
+        EventPreTime <- with(test,fu <= timeVector[i] & dead)
+        censorWeightIfEvent <- ifelse(EventPreTime,censorSurvPredAtFu,1)
         AliveAtTime <- with(test,fu > timeVector[i])
-        BS=mean((survPred[[i]]^2*EventPreTime/censorWeightIfEvent) + ((1-survPred[[i]]^2)*AliveAtTime/censorSurvPred[i]))
+        BS=mean((survPred[[i]]^2*EventPreTime/censorWeightIfEvent + (1-survPred[[i]])^2*AliveAtTime/censorSurvPred[i]),na.rm=T)
         BS
     })
     #Estimating integral of the Brier score function from 0 to t_max
