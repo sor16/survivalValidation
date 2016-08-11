@@ -8,7 +8,6 @@ summarize_validation <- function(cvList,validationMethod,simplify=FALSE){
         summarizedData <- sapply(cvList,unlist) %>% rowMeans() %>% data.frame(IntegratedBrierScore = (.))
         if(simplify) return(summarizedData %>% summarise(IBS=median(IntegratedBrierScore)))
     }else if(validationMethod=="ROC"){
-        FullROCData <-
         summarizedData <- lapply(cvList,bind_rows) %>% bind_rows() %>% group_by(threshold) %>%
             summarise(TPR=mean(TPR,na.rm=T),FPR=mean(FPR,na.rm=T),AUC=mean(AUC,na.rm=T),cumArea=mean(cumArea,na.rm=T)) %>%
             ungroup() %>% distinct(TPR,FPR,.keep_all=TRUE)
@@ -20,7 +19,7 @@ summarize_validation <- function(cvList,validationMethod,simplify=FALSE){
         if(simplify) return(data.frame(A = linearModel$coefficients[[1]], B = linearModel$coefficients[[2]], MSE=mean(linearModel$residuals^2)))
     }else if(validationMethod=="c_statistic"){
         summarizedData <- cvList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
-        if(simplify) return(summarizedData %>% summarise(IBS=median(IntegratedBrierScore)))
+        if(simplify) return(summarizedData %>% summarise(c_statistic=median(c_statistic)))
     }
     return(summarizedData)
 }
