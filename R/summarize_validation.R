@@ -17,7 +17,7 @@ summarize_validation <- function(cvList,validationMethod,simplify=FALSE){
         summarizedData <- lapply(cvList,bind_rows) %>% bind_rows() %>% group_by(deciles) %>%
         summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
         linearModel=with(summarizedData,lm(proportion~deciles))
-        if(simplify) return(data.frame(A = linearModel$coefficients[1], B = linearModel$coefficients[2], MSE=mean(linearModel$residuals^2)))
+        if(simplify) return(data.frame(A = linearModel$coefficients[[1]], B = linearModel$coefficients[[2]], MSE=mean(linearModel$residuals^2)))
     }else if(validationMethod=="c_statistic"){
         summarizedData <- cvList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
         if(simplify) return(summarizedData %>% summarise(IBS=median(IntegratedBrierScore)))
