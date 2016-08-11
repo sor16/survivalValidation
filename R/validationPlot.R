@@ -32,7 +32,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         c_statisticData <- cvList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
         ModelType <- factor(evaluationFunctions)
         validationPlot <- ggplot(data = c_statisticData,aes(ModelType,c_statistic)) + theme_bw() + geom_boxplot()
-    }else{
+    }else if(validationMethod=="calibration"){
         fullCalibrationData <-  lapply(cvList,bind_rows) %>% bind_rows()
         summarizedData <- fullCalibrationData %>% group_by(deciles) %>% summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
         linearModel=with(summarizedData,lm(proportion~deciles))
