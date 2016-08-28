@@ -14,7 +14,8 @@ summarize_validation <- function(cvList,validationMethod,simplify=FALSE){
         if(simplify) return(summarizedData %>% distinct(AUC))
     }else if(validationMethod=="calibration"){
         summarizedData <- lapply(cvList,bind_rows) %>% bind_rows() %>% group_by(deciles) %>%
-        summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
+            summarise(proportion=median(proportion,na.rm=T),lower=quantile(proportion,probs=0.025,na.rm=T),upper=quantile(proportion,probs=0.975,na.rm=T))
+        #summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
         linearModel=with(summarizedData,lm(proportion~deciles))
         if(simplify) return(data.frame(A = linearModel$coefficients[[1]], B = linearModel$coefficients[[2]], MSE=mean(linearModel$residuals^2)))
     }else if(validationMethod=="c_statistic"){

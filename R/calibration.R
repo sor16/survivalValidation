@@ -35,9 +35,9 @@ calibration <- function(train,test=train,FittingFunction,covariates,time,by=0.1,
         estimatedDeath <- round(i*n)
         proportion <- actualDeath/n
         diff <- proportion-i
-        p <- prop.test(x=c(actualDeath,estimatedDeath),n=rep(n,2))
-        data.frame(deciles=i,proportion=proportion,lower=proportion-abs((diff-p$conf.int[1])),upper=proportion+abs((diff-p$conf.int[2])),n=n)
-
+        #p <- prop.test(x=c(actualDeath,estimatedDeath),n=rep(n,2))
+        #data.frame(deciles=i,proportion=proportion,lower=proportion-abs((diff-p$conf.int[1])),upper=proportion+abs((diff-p$conf.int[2])),n=n)
+        data.frame(deciles=i,proportion=proportion)
     }) %>% bind_rows()
     return(calibrationData)
 }
