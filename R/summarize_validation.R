@@ -14,11 +14,11 @@ summarize_validation <- function(cvList,validationMethod,simplify=FALSE){
         if(simplify) return(summarizedData %>% distinct(AUC))
     }else if(validationMethod=="calibration"){
         lmData <- lapply(cvList,bind_rows) %>% bind_rows() %>% group_by(deciles)
-        linearModel <- with(summarizedData,lm(proportion~deciles))
+        linearModel <- with(lmData,lm(proportion~deciles))
         summarizedData <- lmData %>% summarise(Proportion=median(proportion,na.rm=T),lower=quantile(proportion,probs=0.025,na.rm=T),upper=quantile(proportion,probs=0.975,na.rm=T))
         #summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
-
-        if(simplify) return(data.frame(A = linearModel$coefficients[[1]], B = linearModel$coefficients[[2]], MSE=mean(linearModel$residuals^2)))
+        summarizedData <- list(summarizedData=summarizedData,coefficients=c(A=linearModel$coefficients[[1]],B = linearModel$coefficients[[2]]))
+        if(simplify) return(data.frame(A = linearModel$coefficients[[1]], B = linearModel$coefficients[[2]], MSE=sum(linearModel$residuals^2)/(length(linearModel$residuals)-1)))
     }else if(validationMethod=="c_statistic"){
         summarizedData <- cvList %>% sapply(unlist) %>% rowMeans() %>% data.frame(c_statistic = (.))
         if(simplify) return(summarizedData %>% summarise(c_statistic=median(c_statistic)))

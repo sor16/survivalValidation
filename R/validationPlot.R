@@ -28,13 +28,14 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         ModelType <- factor(evaluationFunctions)
         validationPlot <- ggplot(data = summarizedData,aes(ModelType,c_statistic)) + theme_bw() + geom_boxplot()
     }else if(validationMethod=="calibration"){
-        linearModel=with(summarizedData,lm(Proportion~deciles))
+        #Unleashing a list containg summarizedData and coefficients
+        list2env(summarizedData,envir=environment())
         xlim <- with(summarizedData,range(deciles[!is.na(Proportion)])) + c(-0.05,0.05)
         ylim <- with(summarizedData,c(min(lower,na.rm=T),max(upper,na.rm=T)))
         if(is.null(legendPosition)){
             legendPosition <- data.frame(x=rep(xlim[1]+0.1,2),y=c(3*ylim[2]/4.,3*ylim[2]/4 - 0.1))
         }
-        textDat= data.frame(legendPosition,text=paste(c("A","B"),format(linearModel$coefficients,digits = 2),sep=" = "))
+        textDat= data.frame(legendPosition,text=paste(names(coefficients),format(coefficients,digits = 2),sep=" = "))
         validationPlot <- ggplot(data=summarizedData,aes(deciles,Proportion)) + geom_point(na.rm=T) +
             geom_smooth(method = "lm",se=F,na.rm=T) + geom_text(data=textDat,aes(x,y,label=text)) +
             geom_errorbar(aes(ymin = lower,ymax = upper,width=0.01,color="red"),na.rm=T) + theme_bw() +
