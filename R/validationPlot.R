@@ -39,7 +39,7 @@ ValidationPlot <- function(cvList,validationMethod,evaluationFunctions=NULL,lege
         validationPlot <- ggplot(data=summarizedData,aes(deciles,Proportion)) + geom_point(na.rm=T) +
             geom_smooth(method = "lm",se=F,na.rm=T) + geom_text(data=textDat,aes(x,y,label=text)) +
             geom_errorbar(aes(ymin = lower,ymax = upper,width=0.01,color="red"),na.rm=T) + theme_bw() +
-            xlim(xlim) + ylim(ylim) +theme(legend.position="none")
+            xlim(xlim) + ylim(ylim) +theme(legend.position="none") + xlab("Theoretical proportion") + ylab("Actual proportion")
     }
 
     if(animate){
