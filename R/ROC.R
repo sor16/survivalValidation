@@ -26,8 +26,8 @@ ROC  <- function(train,test,FittingFunction,time,covariates,...){
     threshold <- seq(0,1,length.out=100)
     ROCData <- lapply(threshold,function(i){
         eventPredict = prediction >= i
-        TPR=sum(eventPredict & statusAtTime)/sum(statusAtTime)
-        FPR=sum(eventPredict & !statusAtTime)/sum(!statusAtTime)
+        TPR=sum(eventPredict & statusAtTime,na.rm=T)/sum(statusAtTime,na.rm=T)
+        FPR=sum(eventPredict & !statusAtTime,na.rm=T)/sum(!statusAtTime,na.rm=T)
         data.frame(TPR=TPR,FPR=FPR)
     }) %>% bind_rows() %>% arrange(-row_number())
     ROCData$threshold <- threshold
