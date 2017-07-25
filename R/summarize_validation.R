@@ -13,8 +13,8 @@ summarize_validation <- function(cvList,validationMethod,simplify=FALSE){
             ungroup() %>% distinct(TPR,FPR,.keep_all=TRUE)
         if(simplify) return(summarizedData %>% distinct(AUC))
     }else if(validationMethod=="calibration"){
-        lmData <- lapply(cvList,bind_rows) %>% bind_rows() %>% group_by(deciles)
-        linearModel <- with(lmData,lm(proportion~deciles))
+        lmData <- lapply(cvList,bind_rows) %>% bind_rows() %>% group_by(threshold)
+        linearModel <- with(lmData,lm(proportion~threshold))
         summarizedData <- lmData %>% summarise(Proportion=median(proportion,na.rm=T),lower=quantile(proportion,probs=0.025,na.rm=T),upper=quantile(proportion,probs=0.975,na.rm=T))
         #summarise(proportion=mean(proportion,na.rm=T),lower=mean(lower,na.rm=T),upper=mean(upper,na.rm=T))
         summarizedData <- list(summarizedData=summarizedData,coefficients=c(A=linearModel$coefficients[[1]],B = linearModel$coefficients[[2]]))
