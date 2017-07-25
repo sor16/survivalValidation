@@ -23,7 +23,7 @@ IBS <- function(train,test,FittingFunction,covariates,...){
     timeVector <- censorFit$time
     censorSurvPredAtFu <- approx(censorFit$time,censorFit$surv,xout=test$fu)$y
     #Fit a model on train dataset and return prediction on test set
-    survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates = Covariates)
+    survPred <- FittingFunction(train=train,test=test,surv=TRUE,time=timeVector,covariates = covariates)
     #evaluate Brier score at times that survPred allows for
     BSVector <- sapply(1:length(timeVector),function(i){
         aliveAtTime <- with(test,fu > timeVector[i])
