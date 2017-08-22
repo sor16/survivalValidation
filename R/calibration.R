@@ -20,9 +20,10 @@ calibration <- function(train,test=train,FittingFunction,covariates,time,by=0.1,
         stop("follow up time in data has to be called fu and the event has to be called event.")
     }
     #Check if patient has had an event at a user specified time
-    statusAtTime <- with(test,fu < time & event)
+    noncensored <- filter(test,fu >= time || event)
+    statusAtTime <- with(noncensored,fu < time & event)
     #Fit a model on train dataset and return prediction on test set
-    prediction <- FittingFunction(train=train,test=test,covariates=covariates,time=time,surv=FALSE,...) %>% unlist() %>% as.numeric()
+    prediction <- FittingFunction(train=train,test=noncensored,covariates=covariates,time=time,surv=FALSE,...) %>% unlist() %>% as.numeric()
     #Make sequence of proportions
     deciles <- seq(0,1,by=by)
     epsilon <- by/2
